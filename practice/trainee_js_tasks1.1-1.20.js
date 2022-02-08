@@ -181,9 +181,6 @@ function isAnagram(str1, str2) {
   return sortStr1 === sortStr2;
 }
 
-console.log(isAnagram("Камыш", "мышка"));
-console.log(isAnagram("кабан", "кувшин"));
-
 // 3. Написать функцию которая вычисляет подсчет количество цифр в числе. Реализовать с помощью рекурсии.
 function getNumberLength(num, count) {
   if (typeof num !== "number") {
@@ -198,7 +195,6 @@ function getNumberLength(num, count) {
   }
   return counter;
 }
-console.log(getNumberLength(1234567890));
 
 //4. Реализовать функцию которая проверяет, является ли строка палиндромом
 function isPalindrome(string) {
@@ -222,9 +218,6 @@ function isPalindrome(string) {
   let reverseStr = Utils.String.reverse(incomeStr);
   return incomeStr.toLowerCase() == reverseStr.toLowerCase();
 }
-console.log(isPalindrome("Madam, I'm Adam"));
-console.log(isPalindrome("This is not a palindrome"));
-console.log(isPalindrome(153638585));
 
 //5. Написать функцию которая вычисляет подсчет уникальных слов в предложении
 function countUniqueWords(str) {
@@ -237,12 +230,6 @@ function countUniqueWords(str) {
   }
   return counter;
 }
-
-console.log(
-  countUniqueWords(
-    "Прошло пять лет, пять долгих, тоскливых лет, со дня их последней встречи."
-  )
-);
 
 //6. Написать функцию которая вычисляет вхождение каждого слова в предложение
 function countWordsInSentence(str) {
@@ -259,12 +246,6 @@ function countWordsInSentence(str) {
 
   return cache;
 }
-
-console.log(
-  countWordsInSentence(
-    "Прошло пять лет, пять долгих, тоскливых лет, со дня их последней встречи."
-  )
-);
 
 //7. Вычислить периметр и площадь для прямоугольника, треугольника и круга. С помощью конструктора и классов.
 const figures = {
@@ -334,17 +315,6 @@ const figures = {
     };
   },
 };
-const triangle = new figures.Triangle(15, 10, 10);
-console.log(triangle.calculateSquare());
-console.log(triangle.calculatePerimeter());
-
-const rectangle = new figures.Rectangle(15, 10);
-console.log(rectangle.calculatePerimeter());
-console.log(rectangle.calculateSquare());
-
-const circle = new figures.Circle(10);
-console.log(circle.calculatePerimeter());
-console.log(circle.calculateSquare());
 
 class Triangle {
   constructor(aSide, bSide, cSide) {
@@ -384,10 +354,6 @@ class Triangle {
     return perimeter;
   }
 }
-const triangle = new Triangle(15, 10, 10);
-console.log(triangle.calculatePerimeter());
-console.log(triangle.calculateSquare());
-
 class Rectangle {
   constructor(aSide, bSide) {
     this.a = aSide;
@@ -402,10 +368,6 @@ class Rectangle {
     return perimeter;
   }
 }
-const rectangle = new Rectangle(10, 5);
-console.log(rectangle.calculatePerimeter());
-console.log(rectangle.calculateSquare());
-
 class Circle {
   constructor(radius) {
     this.r = radius;
@@ -420,9 +382,6 @@ class Circle {
     return perimeter;
   }
 }
-const circle = new Circle(15);
-console.log(circle.calculatePerimeter());
-console.log(circle.calculateSquare());
 
 //8. Вычислить факториал числа. Реализовать с помощью рекурсии. Реализовать мемоизированную функцию вычисления факториала.
 const factorial = {
@@ -461,11 +420,6 @@ const factorial = {
   })(),
 };
 
-console.log(factorial.calcFactorial(-5));
-console.log(factorial.calcFactorialRec(1));
-console.log(factorial.calcFactorialMemo(5));
-console.log(factorial.calcFactorialMemo(4));
-
 //9. Посчитать сумму всех элементов массива, только тех которые (Кратные двум, кратные трем, которые только положительные и нечетные),
 //реализовать с помощью рекурсии для одномерного массива.
 function sumElementsRec(arr, predicate, sum = 0, index = 0) {
@@ -477,15 +431,6 @@ function sumElementsRec(arr, predicate, sum = 0, index = 0) {
   }
   return sum;
 }
-console.log(
-  sumElementsRec(
-    [
-      -15, -12, -11, -9, -5, -3, -2, -1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-      13, 14, 15, 21, 33, 30, 56, 69,
-    ],
-    (value) => value % 2 === 0
-  )
-);
 
 /*
   case1:(value) => value % 2 === 0)
@@ -507,16 +452,6 @@ function countElements(arr, predicate) {
   return counter;
 }
 
-console.log(
-  countElements(
-    [
-      -15, -12, -11, -9, -5, -3, -2, -1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-      13, 14, 15, 21, 33, 30, 56, 69,
-    ],
-    (value) => value % value && value % 1 === 0
-  )
-);
-
 /*
 case1:(value) => value === 0)
 case2:(value) => value < 0)
@@ -527,22 +462,51 @@ case4:(value) => Utils.Number.isPrime(value)
 //11. Написать функции которые преобразовывают число из десятичной системы счисления в двоичную и в обратную сторону.
 //(Достаточно написать для целых положительных чисел)
 const numberConverter = {
-  fromDecimalToBinary: function (decimalNum) {
-    if (typeof decimalNum !== "number") {
+  fromPositiveDecimalToBinary: function (decimalNum) {
+    if (typeof decimalNum !== "number" || decimalNum < 0) {
       throw new Error("Parameter should be a number");
     }
-    if (decimalNum <= 0) {
-      throw new Error("Parameter should be a positive number");
-    }
+    let resultPositiveBinary = [];
+
     let next = decimalNum;
-    let result = "";
+    let arrWithIntNumber = [];
     while (next > 0) {
       let bit = next % 2;
-      result = bit + result;
       next = Math.floor(next / 2);
+      arrWithIntNumber.push(bit);
     }
-    return result;
+    for (let i = 32 - arrWithIntNumber.length; i > 0; i--) {
+      resultPositiveBinary.push(0);
+    }
+
+    for (let item of arrWithIntNumber.reverse()) {
+      resultPositiveBinary.push(item);
+    }
+
+    return resultPositiveBinary;
   },
+
+  fromNegativeDecimalToBinary: function (decimalNum) {
+    let resultNegativeBinary = [];
+    let resultPositiveBinary = [];
+    if (decimalNum < 0) {
+      resultPositiveBinary = numberConverter.fromPositiveDecimalToBinary(
+        (decimalNum + 1) * -1
+      );
+    } else {
+      throw new Error("Number should be negative");
+    }
+
+    for (let item of resultPositiveBinary) {
+      if (item === 0) {
+        resultNegativeBinary.push(1);
+      } else {
+        resultNegativeBinary.push(0);
+      }
+    }
+    return resultNegativeBinary;
+  },
+
   fromBinaryToDecimal: function (binaryNum) {
     if (typeof binaryNum !== "string") {
       throw new Error("Parameter should be a string");
@@ -558,8 +522,6 @@ const numberConverter = {
     return result;
   },
 };
-console.log(numberConverter.fromBinaryToDecimal("1101"));
-console.log(numberConverter.fromDecimalToBinary(1235));
 
 //12. Пункты 9 и 10 выполнить для двумерных массивов.
 function sumElements2D(arr, predicate) {
@@ -570,22 +532,6 @@ function sumElements2D(arr, predicate) {
   return sum;
 }
 
-console.log(
-  sumElements2D(
-    [
-      [
-        -15, -12, -11, -9, -5, -3, -2, -1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-        12, 13, 14, 15, 21, 33, 30, 56, 69,
-      ],
-      [
-        -15, -12, -11, -9, -5, -3, -2, -1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-        12, 13, 14, 15, 21, 33, 30, 56, 69,
-      ],
-    ],
-    (value) => value % 2 === 0
-  )
-);
-
 function countElements2D(arr, predicate) {
   let counter = 0;
 
@@ -594,22 +540,6 @@ function countElements2D(arr, predicate) {
   }
   return counter;
 }
-
-console.log(
-  countElements2D(
-    [
-      [
-        -15, -12, -11, -9, -5, -3, -2, -1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-        12, 13, 14, 15, 21, 33, 30, 56, 69,
-      ],
-      [
-        -15, -12, -11, -9, -5, -3, -2, -1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-        12, 13, 14, 15, 21, 33, 30, 56, 69,
-      ],
-    ],
-    (value) => value % 2 === 0
-  )
-);
 
 //13. Посчитать сумму значений чисел от min до max (всех, только тех которые кратны 3, только положительные).
 //Нарисовать блок схему. Реализовать также с помощью рекурсии.
@@ -645,12 +575,6 @@ let sumCounter = {
     return sum;
   },
 };
-
-console.log(sumCounter.getSum(-2, 5, (value) => value > 0));
-for (let item of sumCounter.getSumGen(-2, 5, (value) => value > 0)) {
-  console.log(item);
-}
-console.log(sumCounter.getSumRec(-1, 5, (value) => value > 0));
 /*
    case1:(value) => value)
    case2:(value) => value % 3 === 0)
@@ -671,16 +595,6 @@ function getMeanOfArray(arr, predicate) {
   return sum / elementsAmount;
 }
 
-console.log(
-  getMeanOfArray(
-    [
-      -15, -12, -11, -9, -5, -3, -2, -1, 0, 2, 4, 6, 8, 9, 10, 11, 12, 13, 14,
-      15, 21, 30, 56, 69,
-    ],
-    (value) => value % 2 === 0
-  )
-);
-
 function getMeanOf2DArray(arr, predicate) {
   let mean = 0;
 
@@ -689,23 +603,6 @@ function getMeanOf2DArray(arr, predicate) {
   }
   return mean;
 }
-
-console.log(
-  getMeanOf2DArray(
-    [
-      [
-        -15, -12, -11, -9, -5, -3, -2, -1, 0, 2, 4, 6, 8, 9, 10, 11, 12, 13, 14,
-        15, 21, 30, 56, 69,
-      ],
-      [
-        1, 3, 10, 54, -1, -9, 12, -34, 0, 0, 0, -76, 1, 3, 10, 54, -1, -9, 12,
-        -34, 0, 0, 0, -76,
-      ],
-    ],
-    (value) => value % 2 === 0
-  )
-);
-
 /*
 case1:(value) => value)
 case2:(value) => value % 2 === 0)
@@ -715,8 +612,6 @@ case3:(value) => value % 2 !== 0)
 //15. Транспонировать матрицу, сложить две матрицы.
 const matrix1 = Utils.Array.generateMatrix(4, 4);
 const matrix2 = Utils.Array.generateMatrix(4, 4);
-console.log(matrix1);
-console.log(matrix2);
 
 function transposeMatrix(arr) {
   const result = [];
@@ -728,7 +623,6 @@ function transposeMatrix(arr) {
   }
   return result;
 }
-console.log(transposeMatrix(matrix1));
 
 function sumMatrix(matrix1, matrix2) {
   let rows = matrix1.length;
@@ -747,7 +641,6 @@ function sumMatrix(matrix1, matrix2) {
   }
   return result;
 }
-console.log(sumMatrix(matrix1, matrix2));
 
 //16. Удалить из двумерного массива строку в которой присутствует хотя бы один нулевой элемент. Для столбца аналогично реализовать.
 function deleteRowsWithZeroEl(arr) {
@@ -760,7 +653,6 @@ function deleteRowsWithZeroEl(arr) {
   }
   return result;
 }
-console.log(deleteRowsWithZeroEl(matrix2));
 
 /*function deleteRowsWithZeroEl(arr) {
   const rowIndexesToSave = [];
@@ -778,15 +670,7 @@ console.log(deleteRowsWithZeroEl(matrix2));
   }
   return result;
 }
-console.log(
-  deleteRowsWithZeroEl([
-      [1, 0, -13, 6],
-      [8, -9, 2, 0],
-      [3, 1, 9, -3],
-      [4, -22, 9, 8],
-      [1, 7, 9, 44],
-      [0, 76, 4, -9]
-  ])
+
 );*/
 
 function deleteColumnsWithZeroEl(arr) {
@@ -815,16 +699,6 @@ function deleteColumnsWithZeroEl(arr) {
   }
   return result;
 }
-console.log(
-  deleteColumnsWithZeroEl([
-    [1, 0, -13, 6],
-    [8, -9, 2, 0],
-    [3, 1, 9, -3],
-    [4, -22, 9, 8],
-    [0, 7, 9, 44],
-    [0, 76, 4, -9],
-  ])
-);
 
 /*function deleteColumnsWithZeroEl(arr) {
   let transMatrix = transposeMatrix(arr);
@@ -833,7 +707,6 @@ console.log(
 
   return result;
 }
-console.log(deleteColumnsWithZeroEl(matrix1));
 */
 
 //17. Посчитать сумму/количество нулевых элементов/среднее значение элементов матрицы над и под главной диагональю и на главной диагональю.
@@ -851,31 +724,6 @@ function countMeanMatrixDiagonalElements(matrix, predicate) {
   const diagonal = predicate(matrix);
   return getMeanOfArray(diagonal, () => true);
 }
-
-const matrix10 = Utils.Array.generateMatrix(10, 10);
-console.log(sumMatrixDiagonalElements(matrix10, Utils.Array.getAboveDiagonal));
-console.log(sumMatrixDiagonalElements(matrix10, Utils.Array.getMainDiagonal));
-console.log(sumMatrixDiagonalElements(matrix10, Utils.Array.getBelowDiagonal));
-
-console.log(
-  countZeroMatrixDiagonalElements(matrix10, Utils.Array.getAboveDiagonal)
-);
-console.log(
-  countZeroMatrixDiagonalElements(matrix10, Utils.Array.getMainDiagonal)
-);
-console.log(
-  countZeroMatrixDiagonalElements(matrix10, Utils.Array.getBelowDiagonal)
-);
-
-console.log(
-  countMeanMatrixDiagonalElements(matrix10, Utils.Array.getAboveDiagonal)
-);
-console.log(
-  countMeanMatrixDiagonalElements(matrix10, Utils.Array.getMainDiagonal)
-);
-console.log(
-  countMeanMatrixDiagonalElements(matrix10, Utils.Array.getBelowDiagonal)
-);
 
 //18. Создать итерируемый объект, который на каждой итерации возвращает следующее значение числа фибоначчи
 //(Реализовать с помощью итератора и генератора). Реализовать мемоизированную функцию. Реализовать с помощью рекурсии
@@ -926,8 +774,6 @@ let fibonacciNumbersGen = console.log([
   ...fibonacciNumbers.calcNumbersGenerator,
 ]);
 
-console.log(fibonacciNumbers.calcNumbersRecursion(0, 1, 10));
-
 const fibonacciMemoized = console.log(
   fibonacciNumbers.calcNumbersMemoized(0, 1, 10)
 );
@@ -960,9 +806,6 @@ let semaphoreIterator = {
     };
   },
 };
-for (let item of semaphoreIterator) {
-  console.log(item);
-}
 
 function* semaphore(iterations) {
   const colors = ["red", "yellow", "green"];
@@ -982,9 +825,88 @@ function* semaphore(iterations) {
   }
 }
 
-for (const key of semaphore(10)) {
-  console.log(key);
-}
-
 //20. Определить является ли число отрицательным или положительным без сравнения на больше/меньше нуля.
 //Посчитать количество битов числа которые установлены в единицу и которые установлены в 0. Написать свою реализацию для ~, двумя способами.
+function bitwiseNotV1(decimalNumber) {
+  let binaryNumber;
+  let result = [];
+  if (decimalNumber > 0) {
+    binaryNumber = numberConverter.fromPositiveDecimalToBinary(decimalNumber);
+  } else {
+    binaryNumber = numberConverter.fromNegativeDecimalToBinary(decimalNumber);
+  }
+  for (let item of binaryNumber) {
+    if (item === 0) {
+      result.push(1);
+    } else {
+      result.push(0);
+    }
+  }
+  return result;
+}
+
+function bitwiseNotV2(decimalNumber) {
+  let binaryNumber;
+  let result = [];
+  if (decimalNumber > 0) {
+    binaryNumber = numberConverter.fromPositiveDecimalToBinary(decimalNumber);
+  } else {
+    binaryNumber = numberConverter.fromNegativeDecimalToBinary(decimalNumber);
+  }
+  for (let item of binaryNumber) {
+    result.push(item ^ 1);
+  }
+  return result;
+}
+
+function isPositive(number) {
+  if (number >> 31 === -1) {
+    return false;
+  }
+  return true;
+}
+
+function isNegative(number) {
+  if (number >> 31 === -1) {
+    return false;
+  }
+  return true;
+}
+
+function count1s(decimalNumber) {
+  let binaryNumber;
+  if (decimalNumber > 0) {
+    binaryNumber = numberConverter.fromPositiveDecimalToBinary(decimalNumber);
+  } else {
+    binaryNumber = numberConverter.fromNegativeDecimalToBinary(decimalNumber);
+  }
+  if (binaryNumber === 1) {
+    return binaryNumber;
+  }
+  let count = 0;
+  for (let i = 0; i <= binaryNumber.length; i++) {
+    if (binaryNumber[i] === 1) {
+      count++;
+    }
+  }
+  return count;
+}
+
+function count0s(number) {
+  let binaryNumber;
+  if (number > 0) {
+    binaryNumber = numberConverter.fromPositiveDecimalToBinary(number);
+  } else {
+    binaryNumber = numberConverter.fromNegativeDecimalToBinary(number);
+  }
+  if (binaryNumber === 0) {
+    return binaryNumber;
+  }
+  let count = 0;
+  for (let i = 0; i <= binaryNumber.length; i++) {
+    if (binaryNumber[i] === 0) {
+      count++;
+    }
+  }
+  return count;
+}
