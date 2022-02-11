@@ -391,15 +391,15 @@ const figures = {
 
       const diameter =
         sideA / sin.angleA || sideB / sin.angleB || sideC / sin.angleC;
-      const square = diameter ** 2 * sin.angleA * sin.angleB * sin.angleC;
-      return square;
+
+      return diameter ** 2 * sin.angleA * sin.angleB * sin.angleC;
     }),
       (this.calculatePerimeter = function () {
         let sideA = this.sideA;
         let sideB = this.sideB;
         let sideC = this.sideC;
-        const perimeter = sideA + sideB + sideC;
-        return perimeter;
+
+        return sideA + sideB + sideC;
       });
   },
   Rectangle: function (width, height) {
@@ -413,12 +413,10 @@ const figures = {
     this.height = height;
 
     this.calculateSquare = function () {
-      const square = this.width * this.height;
-      return square;
+      return this.width * this.height;
     };
     this.calculatePerimeter = function () {
-      const perimeter = 2 * (this.width + this.height);
-      return perimeter;
+      return 2 * (this.width + this.height);
     };
   },
   Circle: function (radius) {
@@ -428,16 +426,14 @@ const figures = {
     if (typeof radius !== "number") {
       throw new Error("Argument should be a number");
     }
-    this.r = radius;
+    this.radius = radius;
 
     this.calculateSquare = function () {
-      const square = Math.PI * this.r ** 2;
-      return square;
+      return Math.PI * this.radius ** 2;
     };
     this.calculatePerimeter = function () {
-      let diameter = this.r * 2;
-      const perimeter = diameter * Math.PI;
-      return perimeter;
+      let diameter = this.radius * 2;
+      return diameter * Math.PI;
     };
   },
 };
@@ -484,13 +480,12 @@ class Triangle {
       angleC: Math.sin(angles.C),
     };
 
-    const D = sideA / sin.angleA || sideB / sin.angleB || sideC / sin.angleC;
-    const square = D ** 2 * sin.angleA * sin.angleB * sin.angleC;
-    return square;
+    const diameter =
+      sideA / sin.angleA || sideB / sin.angleB || sideC / sin.angleC;
+    return diameter ** 2 * sin.angleA * sin.angleB * sin.angleC;
   }
   calculatePerimeter() {
-    const perimeter = this.sideA + this.sideB + this.sideC;
-    return perimeter;
+    return this.sideA + this.sideB + this.sideC;
   }
 }
 class Rectangle {
@@ -505,12 +500,10 @@ class Rectangle {
     this.height = height;
   }
   calculateSquare() {
-    const square = this.width * this.height;
-    return square;
+    return this.width * this.height;
   }
   calculatePerimeter() {
-    const perimeter = 2 * (this.width + this.height);
-    return perimeter;
+    return 2 * (this.width + this.height);
   }
 }
 class Circle {
@@ -521,16 +514,14 @@ class Circle {
     if (typeof radius !== "number") {
       throw new Error("Argument should be a number");
     }
-    this.r = radius;
+    this.radius = radius;
   }
   calculateSquare() {
-    const square = Math.PI * this.r ** 2;
-    return square;
+    return Math.PI * this.radius ** 2;
   }
   calculatePerimeter() {
-    let diameter = this.r * 2;
-    const perimeter = diameter * Math.PI;
-    return perimeter;
+    let diameter = this.radius * 2;
+    return diameter * Math.PI;
   }
 }
 
@@ -545,7 +536,7 @@ const factorial = {
     }
     let result = 1;
     for (let i = 1; i <= num; i++) {
-      result = i * result;
+      result *= i;
     }
     return result;
   },
