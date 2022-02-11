@@ -16,11 +16,10 @@
 function* sum(min, max) {
   let result = 0;
   while (min < max) {
-    result += min + 1;
+    result += min;
     min++;
     yield result;
   }
  
 }
-
 
