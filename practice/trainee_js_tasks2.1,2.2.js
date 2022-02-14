@@ -1,14 +1,43 @@
 // 1.Написать свою реализацию функций bind, call. Новая реализация должна по функционалу работать аналогично
 //как и соответствующие стандартные функции. Без использования стандартных функций.
 
+// Variant 1
+Function.prototype.customBind = function (context, ...restArgs) {
+    let foo = this;
+    return function (...args) {
+      let uniqueKey = Symbol();
+      context[uniqueKey] = foo;
+      const result = context[uniqueKey](...restArgs.concat(args));
+      delete context[uniqueKey];
+      return result;
+    };
+  };
+
+  Function.prototype.customCall = function (context, ...restArgs) {
+    let uniqueKey = Symbol();
+    context[uniqueKey] = this;
+    const result = context[uniqueKey](restArgs);
+    delete context[uniqueKey];
+    return result;
+  };
+
+  Function.prototype.customApply = function (context, restArgs) {
+    let uniqueKey = Symbol();
+    context[uniqueKey] = this;
+    const result = context[uniqueKey](restArgs);
+    delete context[uniqueKey];
+    return result;
+  };
+
+// Variant 2
 function customBind(boundTargetFunction, boundThis, ...boundArguments) {
-  return (function (...args) {
+  return function (...args) {
     let uniqueKey = Symbol();
     boundThis[uniqueKey] = boundTargetFunction;
     const result = boundThis[uniqueKey](...boundArguments.concat(args));
     delete boundThis[uniqueKey];
     return result;
-  })();
+  };
 }
 
 function customCall(boundTargetFunction, boundThis, ...boundArguments) {
