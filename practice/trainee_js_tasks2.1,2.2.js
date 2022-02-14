@@ -3,31 +3,31 @@
 
 // Variant 1
 Function.prototype.customBind = function (context, ...restArgs) {
-    let foo = this;
-    return function (...args) {
-      let uniqueKey = Symbol();
-      context[uniqueKey] = foo;
-      const result = context[uniqueKey](...restArgs.concat(args));
-      delete context[uniqueKey];
-      return result;
-    };
-  };
-
-  Function.prototype.customCall = function (context, ...restArgs) {
+  let self = this;
+  return function (...args) {
     let uniqueKey = Symbol();
-    context[uniqueKey] = this;
-    const result = context[uniqueKey](restArgs);
+    context[uniqueKey] = self;
+    const result = context[uniqueKey](...restArgs.concat(args));
     delete context[uniqueKey];
     return result;
   };
+};
 
-  Function.prototype.customApply = function (context, restArgs) {
-    let uniqueKey = Symbol();
-    context[uniqueKey] = this;
-    const result = context[uniqueKey](restArgs);
-    delete context[uniqueKey];
-    return result;
-  };
+Function.prototype.customCall = function (context, ...restArgs) {
+  let uniqueKey = Symbol();
+  context[uniqueKey] = this;
+  const result = context[uniqueKey](restArgs);
+  delete context[uniqueKey];
+  return result;
+};
+
+Function.prototype.customApply = function (context, restArgs) {
+  let uniqueKey = Symbol();
+  context[uniqueKey] = this;
+  const result = context[uniqueKey](restArgs);
+  delete context[uniqueKey];
+  return result;
+};
 
 // Variant 2
 function customBind(boundTargetFunction, boundThis, ...boundArguments) {
@@ -101,11 +101,9 @@ Array.prototype.customFind = function (callback) {
   if (typeof callback !== "function") {
     throw new Error("Argument should be a function");
   }
-  let firstFoundElement;
   for (let i = 0; i < this.length; i++) {
     if (callback(this[i], i, this)) {
-      firstFoundElement = this[i];
-      return firstFoundElement;
+      return this[i];
     }
   }
   return undefined;
