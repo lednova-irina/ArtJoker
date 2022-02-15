@@ -23,6 +23,9 @@ class BinarySearchTree {
     if (!this.root) {
       this.root = newNode;
     } else {
+      if (this.contains(data)) {
+        throw new Error("This binary tree already contains this value");
+      }
       this.insertNode(this.root, newNode);
     }
   }
@@ -57,6 +60,7 @@ class BinarySearchTree {
       }
       return currentNode;
     }
+    return null;
   }
 
   size() {
@@ -94,3 +98,46 @@ class BinarySearchTree {
 
 // 2.Написать сортировку двумя различными методами (Можно выбрать любые методы сортировки, самые простые:
 // пузырьковая, выбором)
+
+/* быстрая сортировка*/
+function quickSort(arr) {
+  if (!Array.isArray(arr)) {
+    throw new Error("Argument should be an array");
+  }
+  if (arr.length < 2) {
+    return arr;
+  }
+  const left = [];
+  const right = [];
+  const middle = arr[Math.round((0 + (arr.length - 1)) / 2)];
+
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] !== middle) {
+      if (arr[i] > middle) {
+        right.push(arr[i]);
+      } else {
+        left.push(arr[i]);
+      }
+    }
+  }
+  return [...quickSort(left), middle, ...quickSort(right)];
+}
+
+/* сортировка выбором*/
+function selectionSort(arr) {
+  if (!Array.isArray(arr)) {
+    throw new Error("Argument should be an array");
+  }
+  for (let i = 0; i < arr.length - 1; i++) {
+    let indexOfMinValue = i;
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[j] < arr[indexOfMinValue]) {
+        indexOfMinValue = j;
+      }
+    }
+    if (indexOfMinValue !== i) {
+      [arr[i], arr[indexOfMinValue]] = [arr[indexOfMinValue], arr[i]];
+    }
+  }
+  return arr;
+}
