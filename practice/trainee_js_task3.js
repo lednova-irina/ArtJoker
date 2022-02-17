@@ -15,42 +15,41 @@ class BinaryNode {
       this.root = value;
     }
     if (value < this.root) {
-      this.left = this.#insertNode(this.left, value);
+      if (this.left instanceof BinaryNode) {
+        this.left.insert(value);
+      } else {
+        this.left = new BinaryNode(value);
+      }
     } else if (value > this.root) {
-      this.right = this.#insertNode(this.right, value);
+      if (this.right instanceof BinaryNode) {
+        this.right.insert(value);
+      } else {
+        this.right = new BinaryNode(value);
+      }
     }
-  }
-
-  #insertNode(node, value) {
-    let resultNode = node;
-    if (resultNode instanceof BinaryNode) {
-      resultNode.insert(value);
-    } else {
-      resultNode = new BinaryNode(value);
-    }
-    return resultNode;
+    return this;
   }
 
   search(value) {
     if (value < this.root) {
-      return this.#searchNode(this.left, value);
+      if (!(this.left instanceof BinaryNode)) {
+        return null;
+      }
+      if (this.left !== value) {
+        return this.left.search(value);
+      }
     } else if (value > this.root) {
-      return this.#searchNode(this.right, value);
+      if (!(this.right instanceof BinaryNode)) {
+        return null;
+      }
+      if (this.right !== value) {
+        return this.right.search(value);
+      }
     }
+    return this;
   }
 
-  #searchNode(node, value) {
-    let resultNode = node;
-    if (!(resultNode instanceof BinaryNode)) {
-      return null;
-    }
-    if (resultNode.root !== value) {
-      return resultNode.search(value);
-    }
-    return resultNode;
-  }
-
-  /** It's my own remove method */
+   /** It's my own remove method */
   remove(value) {
     const nodeToRemove = this.search(value);
     if (!(nodeToRemove instanceof BinaryNode)) {
@@ -90,6 +89,18 @@ class BinaryNode {
     return this;
   }
 
+  preOrderTraverse() {
+    let result = [];
+    result.push(this.root);
+    if (this.left) {
+      result.push(...this.left.preOrderTraverse());
+    }
+    if (this.right) {
+      result.push(...this.right.preOrderTraverse());
+    }
+    return result;
+  }
+
   classicRemove(value) {
     if (value < this.root) {
       this.left = this.left.classicRemove(value);
@@ -114,18 +125,6 @@ class BinaryNode {
     this.right = this.right.classicRemove(newNode.root);
 
     return this;
-  }
-
-  preOrderTraverse() {
-    let result = [];
-    result.push(this.root);
-    if (this.left) {
-      result.push(...this.left.preOrderTraverse());
-    }
-    if (this.right) {
-      result.push(...this.right.preOrderTraverse());
-    }
-    return result;
   }
 
   getMin() {
@@ -171,6 +170,35 @@ Array.prototype.quickSort = function () {
   return [...left.quickSort(), middleValue, ...right.quickSort()];
 };
 
+Array.prototype.quickSortWithPredicate = function (predicate) {
+  if (!Array.isArray(this)) {
+    throw new Error("Argument should be an array");
+  }
+  if (this.length < 2) {
+    return this;
+  }
+  const left = [];
+  const right = [];
+  const middleIndex = Math.round((this.length - 1) / 2);
+
+  for (let i = 0; i < this.length; i++) {
+    if (this[i] !== this[middleIndex]) {
+      if (predicate(this[i], this[middleIndex])) {
+        right.push(this[i]);
+      } else {
+        left.push(this[i]);
+      }
+    }
+  }
+  return [
+    ...left.quickSort(predicate),
+    this[middleIndex],
+    ...right.quickSort(predicate),
+  ];
+};
+// predicate: (a, b) => (a.a > b.a ? true : false)
+
+
 /* сортировка выбором*/
 Array.prototype.selectionSort = function () {
   if (!Array.isArray(this)) {
@@ -189,3 +217,22 @@ Array.prototype.selectionSort = function () {
   }
   return this;
 };
+
+Array.prototype.selectionSortWithPredicate = function (predicate) {
+  if (!Array.isArray(this)) {
+    throw new Error("Argument should be an array");
+  }
+  for (let i = 0; i < this.length - 1; i++) {
+    let indexOfMinValue = i;
+    for (let j = i + 1; j < this.length; j++) {
+      if (predicate(this[j], this[indexOfMinValue])) {
+        indexOfMinValue = j;
+      }
+    }
+    if (indexOfMinValue !== i) {
+      [this[i], this[indexOfMinValue]] = [this[indexOfMinValue], this[i]];
+    }
+  }
+  return this;
+};
+// predicate: (a, b) => (a.a < b.a ? true : false)
