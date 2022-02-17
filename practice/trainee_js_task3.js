@@ -11,45 +11,41 @@ class BinaryNode {
   }
 
   insert(value) {
-    if (value === this.root) {
-      this.root = value;
-    }
-    if (value < this.root) {
-      if (this.left instanceof BinaryNode) {
-        this.left.insert(value);
+    if (value !== this.root) {
+      if (value < this.root) {
+        if (this.left instanceof BinaryNode) {
+          this.left.insert(value);
+        } else {
+          this.left = new BinaryNode(value);
+        }
       } else {
-        this.left = new BinaryNode(value);
-      }
-    } else if (value > this.root) {
-      if (this.right instanceof BinaryNode) {
-        this.right.insert(value);
-      } else {
-        this.right = new BinaryNode(value);
+        if (this.right instanceof BinaryNode) {
+          this.right.insert(value);
+        } else {
+          this.right = new BinaryNode(value);
+        }
       }
     }
     return this;
   }
 
   search(value) {
-    if (value < this.root) {
-      if (!(this.left instanceof BinaryNode)) {
-        return null;
-      }
-      if (this.left !== value) {
-        return this.left.search(value);
-      }
-    } else if (value > this.root) {
-      if (!(this.right instanceof BinaryNode)) {
-        return null;
-      }
-      if (this.right !== value) {
-        return this.right.search(value);
-      }
+    if (this.root === value) {
+      return this;
     }
-    return this;
+
+    if (value < this.root) {
+      return this.left.search(value);
+    }
+
+    if (value > this.root) {
+      return this.right.search(value);
+    }
+
+    return null;
   }
 
-   /** It's my own remove method */
+  /** It's my own remove method */
   remove(value) {
     const nodeToRemove = this.search(value);
     if (!(nodeToRemove instanceof BinaryNode)) {
@@ -197,7 +193,6 @@ Array.prototype.quickSortWithPredicate = function (predicate) {
   ];
 };
 // predicate: (a, b) => (a.a > b.a ? true : false)
-
 
 /* сортировка выбором*/
 Array.prototype.selectionSort = function () {
