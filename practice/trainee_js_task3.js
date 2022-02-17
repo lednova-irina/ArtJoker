@@ -33,18 +33,16 @@ class BinaryNode {
 
   search(value) {
     if (value < this.root) {
-      this.left = this.#searchNode(this.left, value);
-      return this.left;
+      return this.#searchNode(this.left, value);
     } else if (value > this.root) {
-      this.right = this.#searchNode(this.right, value);
-      return this.right;
+      return this.#searchNode(this.right, value);
     }
   }
 
   #searchNode(node, value) {
     let resultNode = node;
-    if (!resultNode) {
-      throw new Error("Node is null");
+    if (!(resultNode instanceof BinaryNode)) {
+      return null;
     }
     if (resultNode.root !== value) {
       return resultNode.search(value);
@@ -52,26 +50,28 @@ class BinaryNode {
     return resultNode;
   }
 
+  /** It's my own remove method */
   remove(value) {
     const nodeToRemove = this.search(value);
-    if (!nodeToRemove) {
-      throw new Error("Node is null");
+    if (!(nodeToRemove instanceof BinaryNode)) {
+      return null;
     }
 
     if (!nodeToRemove.left && !nodeToRemove.right) {
       return this.#buildNewNode(nodeToRemove, null);
-    } else if (!nodeToRemove.left) {
-      return this.#buildNewNode(nodeToRemove, nodeToRemove.right);
-    } else if (!nodeToRemove.right) {
-      return this.#buildNewNode(nodeToRemove, nodeToRemove.left);
-    } else {
-      let newRoot = nodeToRemove.left.getMax() || nodeToRemove.right.getMin();
-      return this.#buildNewNode(nodeToRemove, newRoot);
     }
+    if (!nodeToRemove.left) {
+      return this.#buildNewNode(nodeToRemove, nodeToRemove.right);
+    }
+    if (!nodeToRemove.right) {
+      return this.#buildNewNode(nodeToRemove, nodeToRemove.left);
+    }
+    let newRoot = nodeToRemove.right.getMin();
+    return this.#buildNewNode(nodeToRemove, newRoot);
   }
 
   #buildNewNode(node, root) {
-    let nodesArray = node.traverse();
+    let nodesArray = node.preOrderTraverse();
     if (nodesArray.length > 1) {
       for (let i = 0; i < nodesArray.length; i++) {
         if (nodesArray[i] === node.root || nodesArray[i] === root) {
@@ -79,7 +79,6 @@ class BinaryNode {
         }
       }
     }
-    console.log(this);
     node.root = root;
     node.left = null;
     node.right = null;
@@ -88,22 +87,43 @@ class BinaryNode {
         this.insert(nodesArray[i]);
       }
     }
+    return this;
+  }
+
+  classicRemove(value) {
+    if (value < this.root) {
+      this.left = this.left.classicRemove(value);
+      return this;
+    } else if (value > this.root) {
+      this.right = this.right.classicRemove(value);
+      return this;
+    }
+
+    if (!this.left && !this.right) {
+      return null;
+    }
+    if (!this.left) {
+      return this.right;
+    }
+    if (!this.right) {
+      return this.left;
+    }
+
+    let newNode = this.right.getMin();
+    this.root = newNode.root;
+    this.right = this.right.classicRemove(newNode.root);
 
     return this;
   }
 
-  traverse() {
-    return this.preOrder();
-  }
-
-  preOrder() {
+  preOrderTraverse() {
     let result = [];
     result.push(this.root);
     if (this.left) {
-      preOrder(this.left);
+      result.push(...this.left.preOrderTraverse());
     }
     if (this.right) {
-      preOrder(this.right);
+      result.push(...this.right.preOrderTraverse());
     }
     return result;
   }
@@ -112,13 +132,14 @@ class BinaryNode {
     if (this.left instanceof BinaryNode) {
       return this.left.getMin();
     }
-    return this.root;
+    return this;
   }
+
   getMax() {
     if (this.right instanceof BinaryNode) {
       return this.right.getMax();
     }
-    return this.root;
+    return this;
   }
 }
 
@@ -151,23 +172,20 @@ Array.prototype.quickSort = function () {
 };
 
 /* сортировка выбором*/
-Array.prototype.selectionSort = function(){
-    if (!Array.isArray(this)) {
-        throw new Error("Argument should be an array");
+Array.prototype.selectionSort = function () {
+  if (!Array.isArray(this)) {
+    throw new Error("Argument should be an array");
+  }
+  for (let i = 0; i < this.length - 1; i++) {
+    let indexOfMinValue = i;
+    for (let j = i + 1; j < this.length; j++) {
+      if (this[j] < this[indexOfMinValue]) {
+        indexOfMinValue = j;
       }
-      for (let i = 0; i < this.length - 1; i++) {
-        let indexOfMinValue = i;
-        for (let j = i + 1; j < this.length; j++) {
-          if (this[j] < this[indexOfMinValue]) {
-            indexOfMinValue = j;
-          }
-        }
-        if (indexOfMinValue !== i) {
-          [this[i], this[indexOfMinValue]] = [this[indexOfMinValue], this[i]];
-        }
-      }
-      return this;
-}
-
-
-
+    }
+    if (indexOfMinValue !== i) {
+      [this[i], this[indexOfMinValue]] = [this[indexOfMinValue], this[i]];
+    }
+  }
+  return this;
+};
