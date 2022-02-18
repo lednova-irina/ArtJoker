@@ -28,6 +28,29 @@ class BinaryNode {
     }
     return this;
   }
+  
+  insertV1(value) {
+    const leafName = this.detectNodeName(value);
+    if (leafName === "") {
+      return null;
+    }
+    if (this[leafName] instanceof BinaryNode) {
+      this[leafName].insert(value);
+    } else {
+      this[leafName] = new BinaryNode(value);
+    }
+  }
+
+  detectNodeName(value) {
+    let leafName = "";
+    if (value < this.root) {
+      leafName = "left";
+    }
+    if (value > this.root) {
+      leafName = "right";
+    }
+    return leafName;
+  }
 
   search(value) {
     if (this.root === value) {
