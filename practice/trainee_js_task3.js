@@ -14,7 +14,7 @@ class BinaryNode {
     if (value === this.root) {
       return null;
     }
-    
+
     if (value < this.root) {
       if (this.left === null) {
         this.left = new BinaryNode(value);
@@ -120,10 +120,10 @@ class BinaryNode {
   }
 
   classicRemove(value) {
-    if (value < this.root) {
+    if (value < this.root && this.left instanceof BinaryNode) {
       this.left = this.left.classicRemove(value);
       return this;
-    } else if (value > this.root) {
+    } else if (value > this.root && this.left instanceof BinaryNode) {
       this.right = this.right.classicRemove(value);
       return this;
     }
@@ -142,7 +142,7 @@ class BinaryNode {
     this.root = newNode.root;
     this.right = this.right.classicRemove(newNode.root);
 
-    return this;
+    return null;
   }
 
   getMin() {
