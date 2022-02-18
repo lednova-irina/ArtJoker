@@ -11,24 +11,23 @@ class BinaryNode {
   }
 
   insert(value) {
-    if (value !== this.root) {
-      if (value < this.root) {
-        if (this.left instanceof BinaryNode) {
-          this.left.insert(value);
-        } else {
-          this.left = new BinaryNode(value);
-        }
-      } else {
-        if (this.right instanceof BinaryNode) {
-          this.right.insert(value);
-        } else {
-          this.right = new BinaryNode(value);
-        }
-      }
+    if (value === this.root) {
+      return null;
     }
-    return this;
+    
+    if (value < this.root) {
+      if (this.left === null) {
+        this.left = new BinaryNode(value);
+      }
+      return this.left.insert(value);
+    }
+
+    if (this.right === null) {
+      this.right = new BinaryNode(value);
+    }
+    return this.right?.insert(value);
   }
-  
+
   insertV1(value) {
     const leafName = this.detectNodeName(value);
     if (leafName === "") {
